@@ -1,6 +1,4 @@
-﻿#pragma once
-#include <functional>
-#include <iostream>
+#pragma once
 #include <vector>
 
 template<typename... Args>

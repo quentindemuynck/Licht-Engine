@@ -1,6 +1,10 @@
 
-add_library(LichtEngine main.cpp system/ServiceLocator.h)
-AddLightLibraries()
+add_library(LichtEngine
+    main.cpp
+)
 
-target_link_libraries(LichtEngine PUBLIC LichtEngine-Libraries)
-target_copy_webgpu_binaries(LichtEngine)
+add_subdirectory(core)
+add_subdirectory(renderer)
+
+target_link_libraries(LichtEngine PUBLIC LichtEngine-core)
+target_link_libraries(LichtEngine PUBLIC LichtEngine-renderer)

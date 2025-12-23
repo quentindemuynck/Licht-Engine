@@ -115,7 +115,7 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(angelscript)
 if(NOT angelscript_POPULATED)
-    FetchContent_Populate(angelscript)
+    FetchContent_MakeAvailable(angelscript)
 
     set(AS_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
 

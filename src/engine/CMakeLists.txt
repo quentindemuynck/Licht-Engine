@@ -1,5 +1,8 @@
 
-add_library(LichtEngine main.cpp system/ServiceLocator.h)
+add_library(LichtEngine 
+main.cpp
+system/ServiceLocator.h
+system/scripting/ScriptingEngine.cpp)
 AddLightLibraries()
 
 target_link_libraries(LichtEngine PUBLIC LichtEngine-Libraries)

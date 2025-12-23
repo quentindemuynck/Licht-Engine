@@ -16,6 +16,22 @@ namespace
     licht::Core core;
 } // namespace
 
+// angel script functions
+void as_log_info(const std::string& msg)
+{
+    spdlog::info("{}", msg);
+}
+
+void as_log_warn(const std::string& msg)
+{
+    spdlog::warn("{}", msg);
+}
+
+void as_log_error(const std::string& msg)
+{
+    spdlog::error("{}", msg);
+}
+
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
@@ -30,6 +46,25 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
     core.get_update().notify_listeners();
 
     licht::system::scripting::ScriptingEngine scriptingEngine;
+
+    asIScriptEngine* engine = scriptingEngine.get_angel_script_engine();
+
+    engine->RegisterGlobalFunction(
+        "void log_info(const string &in)",
+        asFUNCTION(as_log_info),
+        asCALL_CDECL);
+
+    engine->RegisterGlobalFunction(
+        "void log_warn(const string &in)",
+        asFUNCTION(as_log_warn),
+        asCALL_CDECL);
+
+    engine->RegisterGlobalFunction(
+        "void log_error(const string &in)",
+        asFUNCTION(as_log_error),
+        asCALL_CDECL);
+
+
     scriptingEngine.load_module_from_file("Game", "game/main.as");
     scriptingEngine.execute("Game", "void main()");
 
@@ -55,3 +90,5 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
     // app.SDL_AppQuit(appstate, result);
 }
+
+

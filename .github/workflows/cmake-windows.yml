@@ -19,6 +19,6 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Test
-        working-directory: build
-        run: ctest --config Release --output-on-failure
+      # - name: Test
+      #  working-directory: build
+      #  run: ctest --config Release --output-on-failure

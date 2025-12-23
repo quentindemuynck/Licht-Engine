@@ -1,10 +1,6 @@
 add_library(LichtEngine-net
         src/server.cpp
         include/server.h
-        src/Test.cpp
-        src/Test.h
-        src/test.cpp
-        src/test.h
         src/client.cpp
         include/client.h)
 

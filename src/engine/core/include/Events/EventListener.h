@@ -42,7 +42,7 @@ EventListener<Args...>::~EventListener()
 {
     if (m_event != nullptr)
     {
-        m_event->remove_listener(this);
+        m_event->remove_listener(*this);
     }
 }
 
@@ -64,8 +64,8 @@ EventListener<Args...>::EventListener(EventListener&& other) noexcept
 {
     if (m_event != nullptr)
     {
-        m_event->add_listener(this);
-        other.m_event->remove_listener(&other);
+        m_event->add_listener(*this);
+        other.m_event->remove_listener(other);
     }
     other.m_event = nullptr;
 }
@@ -76,7 +76,7 @@ EventListener<Args...>& EventListener<Args...>::operator=(const EventListener& o
     {
         m_function = other.m_function;
         m_event = other.m_event;
-        m_event->add_listener(this);
+        m_event->add_listener(*this);
     }
 
     return *this;
@@ -91,8 +91,8 @@ EventListener<Args...>& EventListener<Args...>::operator=(EventListener&& other)
         m_event = other.m_event;
         if (m_event != nullptr)
         {
-            other.m_event->remove_listener(&other);
-            other.m_event->add_listener(this);
+            other.m_event->remove_listener(other);
+            other.m_event->add_listener(*this);
         }
     }
 

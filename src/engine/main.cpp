@@ -16,8 +16,6 @@ namespace
 } // namespace
 
 
-
-
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
     m_window = SDL_CreateWindow("Editor", 1920, 1080, 0);
@@ -27,7 +25,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
         spdlog::info("hello");
     }};
 
-    core.update.add_listener(&o_yea_i_hear);
+    core.update.add_listener(o_yea_i_hear);
     core.update.notify_listeners();
 
     return SDL_AppResult::SDL_APP_CONTINUE;

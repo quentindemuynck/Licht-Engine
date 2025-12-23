@@ -19,8 +19,8 @@ public:
     Event(Event&& other) noexcept;
     Event& operator=(Event&& other) noexcept;
 
-    void add_listener(EventListener<Args...>* listener);
-    void remove_listener(EventListener<Args...>* listener);
+    void add_listener(EventListener<Args...>& listener);
+    void remove_listener(EventListener<Args...>& listener);
 
     void notify_listeners(Args... args);
 
@@ -68,17 +68,17 @@ Event<Args...>& Event<Args...>::operator=(Event&& other) noexcept
 }
 
 template<typename... Args>
-void Event<Args...>::add_listener(EventListener<Args...>* listener)
+void Event<Args...>::add_listener(EventListener<Args...>& listener)
 {
-    listener->set_event_internal(this);
-    m_function_pointers.push_back(listener);
+    listener.set_event_internal(this);
+    m_function_pointers.push_back(&listener);
 }
 
 template<typename... Args>
-void Event<Args...>::remove_listener(EventListener<Args...>* listener)
+void Event<Args...>::remove_listener(EventListener<Args...>& listener)
 {
-    listener->remove_from_event_internal();
-    std::erase(m_function_pointers, listener);
+    listener.remove_from_event_internal();
+    std::erase(m_function_pointers, &listener);
 }
 
 template<typename... Args>

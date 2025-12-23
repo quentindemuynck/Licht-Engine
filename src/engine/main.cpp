@@ -25,8 +25,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
         spdlog::info("hello");
     }};
 
-    core.update.add_listener(o_yea_i_hear);
-    core.update.notify_listeners();
+    core.get_update().add_listener(o_yea_i_hear);
+    core.get_update().notify_listeners();
 
     return SDL_AppResult::SDL_APP_CONTINUE;
 }

@@ -121,7 +121,7 @@ function(AddLightLibraries)
     )
     FetchContent_MakeAvailable(tracy)
 
-    # ENet used for UDP based networking
+    # ENet used for UDP based net
     FetchContent_Declare(
             enet
             URL https://github.com/zpl-c/enet/archive/refs/tags/v2.6.5.zip

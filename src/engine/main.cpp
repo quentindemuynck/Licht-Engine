@@ -8,6 +8,7 @@
 
 #include <Events/EventListener.h>
 #include <Core.h>
+#include "ScriptingEngine.h"
 
 namespace
 {
@@ -27,6 +28,11 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 
     core.update.add_listener(o_yea_i_hear);
     core.update.notify_listeners();
+
+    licht::system::scripting::ScriptingEngine scriptingEngine;
+    scriptingEngine.load_module_from_file("Game", "game/main.as");
+    scriptingEngine.execute("Game", "void main()");
+
 
     return SDL_AppResult::SDL_APP_CONTINUE;
 }

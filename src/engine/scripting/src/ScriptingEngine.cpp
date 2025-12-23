@@ -12,6 +12,10 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
+//reflection
+
+#include <reflect>
+
 namespace licht::system::scripting
 {
     ScriptingEngine::ScriptingEngine()
@@ -22,13 +26,13 @@ namespace licht::system::scripting
             spdlog::error("failed to create AngelScript engine!");
         }
 
-        int r = m_engine->SetMessageCallback(asFUNCTION(ScriptingEngine::MessageCallback), nullptr, asCALL_CDECL);
+        int r = m_engine->SetMessageCallback(asFUNCTION(ScriptingEngine::message_callback), nullptr, asCALL_CDECL);
         m_engine->SetEngineProperty(asEP_ALLOW_UNSAFE_REFERENCES, 1);
 
-        RegisterAddons();
+        register_addons();
     }
 
-    bool ScriptingEngine::LoadModuleFromFile(const std::string& moduleName, const std::string& filePath)
+    bool ScriptingEngine::load_module_from_file(const std::string& moduleName, const std::string& filePath)
     {
         CScriptBuilder builder;
         int            r = builder.StartNewModule(m_engine.get(), moduleName.c_str());
@@ -38,21 +42,21 @@ namespace licht::system::scripting
         r = builder.AddSectionFromFile(filePath.c_str());
         if (r < 0)
         {
-            spdlog::error("Failed to read script file: %s\n", filePath.c_str());
+            spdlog::error("Failed to read script file: {}", filePath.c_str());
             return false;
         }
 
         r = builder.BuildModule();
         if (r < 0)
         {
-            spdlog::error("BuildModule failed for %s\n", moduleName.c_str());
+            spdlog::error("Function not found: {}", moduleName.c_str());
             return false;
         }
 
         return true;
     }
 
-    bool ScriptingEngine::LoadModuleFromString(const std::string& moduleName,
+    bool ScriptingEngine::load_module_from_string(const std::string& moduleName,
                                                const std::string& virtualName,
                                                const std::string& code)
     {
@@ -71,19 +75,19 @@ namespace licht::system::scripting
         return true;
     }
 
-    bool ScriptingEngine::Execute(const std::string& moduleName, const std::string& functionDecl)
+    bool ScriptingEngine::execute(const std::string& moduleName, const std::string& functionDecl)
     {
         asIScriptModule* mod = m_engine->GetModule(moduleName.c_str());
         if (!mod)
         {
-            spdlog::error("Module not found: %s\n", moduleName.c_str());
+            spdlog::error("Module not found: {}", moduleName.c_str());
             return false;
         }
 
         asIScriptFunction* func = mod->GetFunctionByDecl(functionDecl.c_str());
         if (!func)
         {
-            spdlog::error("Function not found: %s\n", functionDecl.c_str());
+            spdlog::error("Function not found: {}", functionDecl.c_str());
             return false;
         }
 
@@ -91,7 +95,7 @@ namespace licht::system::scripting
         if (!ctx)
             return false;
 
-        ctx->SetExceptionCallback(asFUNCTION(ScriptingEngine::ExceptionCallback), nullptr, asCALL_CDECL);
+        ctx->SetExceptionCallback(asFUNCTION(ScriptingEngine::exception_callback), nullptr, asCALL_CDECL);
 
         int r = ctx->Prepare(func);
         if (r < 0)
@@ -105,11 +109,11 @@ namespace licht::system::scripting
         {
             if (r == asEXECUTION_EXCEPTION)
             {
-                spdlog::error("Execution exception.\n");
+                spdlog::error("Execution exception.");
             }
             else
             {
-                spdlog::error("Execution failed code=%d\n", r);
+                spdlog::error("Execution failed code= {}", r);
             }
             ctx->Release();
             return false;
@@ -119,12 +123,12 @@ namespace licht::system::scripting
         return true;
     }
 
-    asIScriptEngine* ScriptingEngine::GetAngelScriptEngine() const
+    asIScriptEngine* ScriptingEngine::get_angel_script_engine() const
     {
         return m_engine.get();
     }
 
-    void ScriptingEngine::MessageCallback(const asSMessageInfo* msg, void* param)
+    void ScriptingEngine::message_callback(const asSMessageInfo* msg, void* param)
     {
         const char* section = msg->section ? msg->section : "<unknown>";
 
@@ -159,7 +163,7 @@ namespace licht::system::scripting
         }
     }
 
-  void ScriptingEngine::ExceptionCallback(asIScriptContext* ctx, void*)
+  void ScriptingEngine::exception_callback(asIScriptContext* ctx, void*)
     {
         int         col = 0;
         const char* section = "<unknown>";
@@ -183,7 +187,7 @@ namespace licht::system::scripting
 
 
 
-    void ScriptingEngine::RegisterAddons()
+    void ScriptingEngine::register_addons()
     {
         RegisterStdString(m_engine.get());
         RegisterScriptArray(m_engine.get(), true);

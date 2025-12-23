@@ -26,18 +26,18 @@ namespace licht::system::scripting
         ScriptingEngine(const ScriptingEngine&) = delete;
         ScriptingEngine& operator=(const ScriptingEngine&) = delete;
 
-        bool LoadModuleFromFile(const std::string& moduleName, const std::string& filePath);
-        bool LoadModuleFromString(const std::string& moduleName, const std::string& virtualName, const std::string& code);
+        bool load_module_from_file(const std::string& moduleName, const std::string& filePath);
+        bool load_module_from_string(const std::string& moduleName, const std::string& virtualName, const std::string& code);
 
-        bool Execute(const std::string& moduleName, const std::string& functionDecl);
+        bool execute(const std::string& moduleName, const std::string& functionDecl);
 
-        asIScriptEngine* GetAngelScriptEngine() const;
+        asIScriptEngine* get_angel_script_engine() const;
 
     private:
-        static void MessageCallback(const asSMessageInfo* msg, void* param);
-        static void ExceptionCallback(asIScriptContext* ctx, void* param);
+        static void message_callback(const asSMessageInfo* msg, void* param);
+        static void exception_callback(asIScriptContext* ctx, void* param);
 
-        void RegisterAddons();
+        void register_addons();
 
         std::unique_ptr<asIScriptEngine, AsEngineReleaser> m_engine;
     };

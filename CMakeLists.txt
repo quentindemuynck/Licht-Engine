@@ -12,5 +12,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore *)
 
 include(cmake/libraries.cmake)
+AddLightLibraries()
 
 add_subdirectory(src)

@@ -103,6 +103,8 @@ function(AddLightLibraries)
         GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(reflect)
+    add_library(reflect_cpp20 INTERFACE)
+    target_include_directories(reflect_cpp20 INTERFACE ${reflect_SOURCE_DIR} )
 
     # tracy
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -172,5 +174,6 @@ function(AddLightLibraries)
             lz4
             enet::enet_static
             sodium
+            reflect_cpp20
     )
 endfunction()

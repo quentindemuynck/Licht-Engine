@@ -95,6 +95,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
+# Reflection library from the allyway
+FetchContent_Declare(
+    reflect
+    GIT_REPOSITORY https://github.com/qlibs/reflect.git
+    GIT_TAG 96b9548a6e114368a3ab22a674a0feab7da7cfd8
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(reflect)
 
 # tracy
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

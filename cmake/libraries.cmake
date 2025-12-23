@@ -119,6 +119,45 @@ function(AddLightLibraries)
     )
     FetchContent_MakeAvailable(tracy)
 
+    # ENet used for UDP based networking
+    FetchContent_Declare(
+            enet
+            URL https://github.com/zpl-c/enet/archive/refs/tags/v2.6.5.zip
+    )
+    FetchContent_MakeAvailable(enet)
+
+    # Libsodium used for network encryption
+    FetchContent_Declare(
+            libsodium
+            GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git
+            GIT_TAG master
+            GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(libsodium)
+
+    # LZ4 fast compression for network
+    FetchContent_Declare(
+            lz4
+            GIT_REPOSITORY https://github.com/lz4/lz4.git
+            GIT_TAG v1.10.0
+            GIT_SHALLOW TRUE
+            GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(lz4)
+
+    add_library(lz4 STATIC
+            ${lz4_SOURCE_DIR}/lib/lz4.c
+            ${lz4_SOURCE_DIR}/lib/lz4hc.c
+    )
+
+    target_include_directories(lz4 PUBLIC
+            ${lz4_SOURCE_DIR}/lib
+    )
+
+    target_compile_definitions(lz4 PUBLIC
+            LZ4_DISABLE_DEPRECATE_WARNINGS
+    )
+
     # final
     add_library(LichtEngine-Libraries INTERFACE)
     target_link_libraries(LichtEngine-Libraries INTERFACE
@@ -130,5 +169,8 @@ function(AddLightLibraries)
             SDL3::SDL3
             webgpu
             EnTT::EnTT
+            lz4
+            enet::enet_static
+            sodium
     )
 endfunction()

@@ -49,14 +49,7 @@ target_compile_definitions(glm PUBLIC
         GLM_EXT_INCLUDED
 )
 
-# IMGUI
-FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG v1.92.1-docking
-    GIT_SHALLOW TRUE
-)
-FetchContent_MakeAvailable(imgui)
+
 
 # entt
 FetchContent_Declare(
@@ -66,6 +59,15 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(entt)
+
+# # IMGUI
+# FetchContent_Declare(
+#     imgui
+#     GIT_REPOSITORY https://github.com/ocornut/imgui.git
+#     GIT_TAG v1.92.1-docking
+#     GIT_SHALLOW TRUE
+# )
+# FetchContent_MakeAvailable(imgui)
 
 # add_library(imgui)
 # target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})

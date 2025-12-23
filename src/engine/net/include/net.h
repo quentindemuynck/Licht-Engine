@@ -2,18 +2,18 @@
 
 namespace licht::net
 {
-    class net final
+    class NetModule final
     {
     public:
-        net() = default;
-        ~net() = default;
+        NetModule();
+        ~NetModule();
 
-        net(const net&) = delete;
-        net(net&&) = delete;
-        net& operator=(const net&) = delete;
-        net& operator=(net&&) = delete;
+        NetModule(const NetModule&) = delete;
+        NetModule(NetModule&&) = delete;
+        NetModule& operator=(const NetModule&) = delete;
+        NetModule& operator=(NetModule&&) = delete;
 
     private:
-        // TODO: members
+        bool m_initialized{ false };
     };
 }

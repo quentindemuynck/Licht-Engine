@@ -12,3 +12,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore *)
+
+include(Libraries.cmake)
+target_link_libraries(${PROJECT_NAME} PRIVATE Licht-Engine-Libraries)
+
+target_copy_webgpu_binaries(${PROJECT_NAME})

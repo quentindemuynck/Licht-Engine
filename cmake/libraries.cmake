@@ -103,6 +103,8 @@ function(AddLightLibraries)
         GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(reflect)
+    add_library(reflect_cpp20 INTERFACE)
+    target_include_directories(reflect_cpp20 INTERFACE ${reflect_SOURCE_DIR} )
 
     # AngelScript
 FetchContent_Declare(
@@ -169,5 +171,6 @@ target_include_directories(angelscript_addons PUBLIC
             SDL3::SDL3
             webgpu
             EnTT::EnTT
+            reflect_cpp20
     )
 endfunction()

@@ -1,18 +1,24 @@
 [
   {
     "label": "Cmake: Config",
-    "command": "cmake -B build -S .",
+    "command": "cmake -B build -S . --preset x64-debug",
     "args": [],
   },
   {
     "label": "CMake: Build & Run",
-    "command": "cmake --build ../; ./LichtEngine.exe",
+    "command": "cmake --build ../; if($?){./Licht-Game.exe}",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT/build/Debug",
+  },
+  {
+    "label": "CMake: Build",
+    "command": "cmake --build ../",
     "args": [],
     "cwd": "$ZED_WORKTREE_ROOT/build/Debug",
   },
   {
     "label": "Run",
-    "command": "./build/Debug/LichtEngine.exe",
+    "command": "./build/Debug/Licht-Game.exe",
     "args": [],
     "cwd": "$ZED_WORKTREE_ROOT/build/Debug",
   },

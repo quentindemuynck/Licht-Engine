@@ -1,1 +1,6 @@
-cmake_minimum_required(VERSION 3.31.6)
+
+add_library(LichtEngine main.cpp system/ServiceLocator.h)
+AddLightLibraries()
+
+target_link_libraries(LichtEngine PUBLIC LichtEngine-Libraries)
+target_copy_webgpu_binaries(LichtEngine)

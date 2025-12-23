@@ -1,0 +1,19 @@
+[
+  {
+    "label": "Cmake: Config",
+    "command": "cmake -B build -S .",
+    "args": [],
+  },
+  {
+    "label": "CMake: Build & Run",
+    "command": "cmake --build ../; ./LichtEngine.exe",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT/build/Debug",
+  },
+  {
+    "label": "Run",
+    "command": "./build/Debug/LichtEngine.exe",
+    "args": [],
+    "cwd": "$ZED_WORKTREE_ROOT/build/Debug",
+  },
+]

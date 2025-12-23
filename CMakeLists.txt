@@ -11,7 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME} src/engine/main.cpp
-        src/engine/ServiceLocator.h)
+        src/engine/system/ServiceLocator.h)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/.gitignore *)
 
 include(Libraries.cmake)

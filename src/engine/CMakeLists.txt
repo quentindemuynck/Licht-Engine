@@ -1,5 +1,5 @@
 
-add_library(LichtEngine
+add_executable(LichtEngine
     main.cpp
 )
 

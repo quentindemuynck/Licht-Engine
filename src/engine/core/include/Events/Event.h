@@ -1,35 +1,38 @@
 #pragma once
 #include <vector>
 
-template<typename... Args>
-class EventListener;
-
-template<typename... Args>
-class Event final
+namespace licht
 {
-public:
-    Event() = default;
-    ~Event();
+    template<typename... Args>
+    class EventListener;
 
-    Event(const Event& other) = delete;
-    Event& operator=(const Event& other) = delete;
+    template<typename... Args>
+    class Event final
+    {
+    public:
+        Event() = default;
+        ~Event();
 
-    Event(Event&& other) noexcept;
-    Event& operator=(Event&& other) noexcept;
+        Event(const Event& other) = delete;
+        Event& operator=(const Event& other) = delete;
 
-    void add_listener(EventListener<Args...>& listener);
-    void remove_listener(EventListener<Args...>& listener);
+        Event(Event&& other) noexcept;
+        Event& operator=(Event&& other) noexcept;
 
-    void notify_listeners(Args... args);
+        void add_listener(EventListener<Args...>& listener);
+        void remove_listener(EventListener<Args...>& listener);
 
-private:
-    std::vector<EventListener<Args...>*> m_function_pointers;
-};
+        void notify_listeners(Args... args);
+
+    private:
+        std::vector<EventListener<Args...>*> m_function_pointers;
+    };
+} // namespace licht
 
 #include "EventListener.h"
 
 template<typename... Args>
-Event<Args...>::~Event()
+licht::Event<Args...>::~Event()
 {
     for (EventListener<Args...>* functions : m_function_pointers)
     {
@@ -38,7 +41,7 @@ Event<Args...>::~Event()
 }
 
 template<typename... Args>
-Event<Args...>::Event(Event&& other) noexcept
+licht::Event<Args...>::Event(Event&& other) noexcept
     : m_function_pointers(std::move(other.m_function_pointers))
 {
     other.m_function_pointers.clear();
@@ -50,7 +53,7 @@ Event<Args...>::Event(Event&& other) noexcept
 }
 
 template<typename... Args>
-Event<Args...>& Event<Args...>::operator=(Event&& other) noexcept
+licht::Event<Args...>& licht::Event<Args...>::operator=(Event&& other) noexcept
 {
     if (this != &other)
     {
@@ -66,21 +69,21 @@ Event<Args...>& Event<Args...>::operator=(Event&& other) noexcept
 }
 
 template<typename... Args>
-void Event<Args...>::add_listener(EventListener<Args...>& listener)
+void licht::Event<Args...>::add_listener(EventListener<Args...>& listener)
 {
     listener.set_event_internal(this);
     m_function_pointers.push_back(&listener);
 }
 
 template<typename... Args>
-void Event<Args...>::remove_listener(EventListener<Args...>& listener)
+void licht::Event<Args...>::remove_listener(EventListener<Args...>& listener)
 {
     listener.remove_from_event_internal();
     std::erase(m_function_pointers, &listener);
 }
 
 template<typename... Args>
-void Event<Args...>::notify_listeners(Args... args)
+void licht::Event<Args...>::notify_listeners(Args... args)
 {
     for (EventListener<Args...>* function : m_function_pointers)
     {

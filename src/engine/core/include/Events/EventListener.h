@@ -1,44 +1,49 @@
 #pragma once
 #include <functional>
 
-template<typename... Args>
-class Event;
-
-template<typename... Args>
-class EventListener final
+namespace licht
 {
-public:
-    explicit EventListener(std::function<void(Args...)> function);
-    ~EventListener();
 
-    EventListener(const EventListener& other) noexcept;
-    EventListener(EventListener&& other) noexcept;
-    EventListener& operator=(const EventListener& other) noexcept;
-    EventListener& operator=(EventListener&& other) noexcept;
+    template<typename... Args>
+    class Event;
 
-    void call_function(Args&&... args);
+    template<typename... Args>
+    class EventListener final
+    {
+    public:
+        explicit EventListener(std::function<void(Args...)> function);
+        ~EventListener();
 
-private:
-    template<typename... Args2>
-    friend class Event;
+        EventListener(const EventListener& other) noexcept;
+        EventListener(EventListener&& other) noexcept;
+        EventListener& operator=(const EventListener& other) noexcept;
+        EventListener& operator=(EventListener&& other) noexcept;
 
-    void set_event_internal(Event<Args...>* event);
-    void remove_from_event_internal();
+        void call_function(Args&&... args);
 
-    std::function<void(Args...)> m_function;
-    Event<Args...>*              m_event{};
-};
+    private:
+        template<typename... Args2>
+        friend class Event;
+
+        void set_event_internal(Event<Args...>* event);
+        void remove_from_event_internal();
+
+        std::function<void(Args...)> m_function;
+        Event<Args...>*              m_event{};
+    };
+
+} // namespace licht
 
 // #include "Event.h"
 
 template<typename... Args>
-EventListener<Args...>::EventListener(std::function<void(Args...)> function)
+licht::EventListener<Args...>::EventListener(std::function<void(Args...)> function)
     : m_function{ function }
 {
 }
 
 template<typename... Args>
-EventListener<Args...>::~EventListener()
+licht::EventListener<Args...>::~EventListener()
 {
     if (m_event != nullptr)
     {
@@ -47,7 +52,7 @@ EventListener<Args...>::~EventListener()
 }
 
 template<typename... Args>
-EventListener<Args...>::EventListener(const EventListener& other) noexcept
+licht::EventListener<Args...>::EventListener(const EventListener& other) noexcept
     : m_function{ other.m_function }
     , m_event{ other.m_event }
 {
@@ -58,7 +63,7 @@ EventListener<Args...>::EventListener(const EventListener& other) noexcept
 }
 
 template<typename... Args>
-EventListener<Args...>::EventListener(EventListener&& other) noexcept
+licht::EventListener<Args...>::EventListener(EventListener&& other) noexcept
     : m_function{ std::move(other.m_function) }
     , m_event{ other.m_event }
 {
@@ -70,7 +75,7 @@ EventListener<Args...>::EventListener(EventListener&& other) noexcept
     other.m_event = nullptr;
 }
 template<typename... Args>
-EventListener<Args...>& EventListener<Args...>::operator=(const EventListener& other) noexcept
+licht::EventListener<Args...>& licht::EventListener<Args...>::operator=(const EventListener& other) noexcept
 {
     if (m_event != nullptr)
     {
@@ -83,7 +88,7 @@ EventListener<Args...>& EventListener<Args...>::operator=(const EventListener& o
 }
 
 template<typename... Args>
-EventListener<Args...>& EventListener<Args...>::operator=(EventListener&& other) noexcept
+licht::EventListener<Args...>& licht::EventListener<Args...>::operator=(EventListener&& other) noexcept
 {
     if (this != &other)
     {
@@ -100,19 +105,19 @@ EventListener<Args...>& EventListener<Args...>::operator=(EventListener&& other)
 }
 
 template<typename... Args>
-void EventListener<Args...>::call_function(Args&&... args)
+void licht::EventListener<Args...>::call_function(Args&&... args)
 {
     m_function(std::forward<Args>(args)...);
 }
 
 template<typename... Args>
-void EventListener<Args...>::set_event_internal(Event<Args...>* event)
+void licht::EventListener<Args...>::set_event_internal(Event<Args...>* event)
 {
     m_event = event;
 }
 
 template<typename... Args>
-void EventListener<Args...>::remove_from_event_internal()
+void licht::EventListener<Args...>::remove_from_event_internal()
 {
     m_event = nullptr;
 }

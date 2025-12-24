@@ -35,7 +35,7 @@ namespace licht::net
             {
                 case ENET_EVENT_TYPE_CONNECT: {
                     Address addr{event.peer->address};
-                    spdlog::info("A new client connected from %x:%u.\n",
+                    spdlog::info("SERVER - A new client connected from %x:%u.\n",
                             addr.ToString(),
                             addr.Port());
 
@@ -45,7 +45,7 @@ namespace licht::net
                     break;
                 }
                 case ENET_EVENT_TYPE_RECEIVE: {
-                    printf("A packet of length %llu containing %p was received from %p on channel %u.\n",
+                    printf("SERVER - A packet of length %llu containing %p was received from %p on channel %u.\n",
                         event.packet->dataLength,
                         event.packet->data,
                         event.peer->data,
@@ -57,7 +57,7 @@ namespace licht::net
                 }
 
                 case ENET_EVENT_TYPE_DISCONNECT: {
-                    spdlog::info("%s disconnected.\n", event.peer->data);
+                    spdlog::info("SERVER - %s disconnected.\n", event.peer->data);
 
                     // Reset client information
                     event.peer->data = nullptr;
@@ -65,7 +65,7 @@ namespace licht::net
                 }
 
                 default: {
-                    spdlog::warn("Unhandled event type {}", event.peer->data);
+                    spdlog::warn("SERVER - Unhandled event type {}", event.peer->data);
                     break;
                 }
             }

@@ -1,6 +1,8 @@
 #pragma once
 #include "enet.h"
 
+#include <string>
+
 namespace licht::net
 {
     class Client final
@@ -8,6 +10,9 @@ namespace licht::net
     public:
         Client();
         ~Client();
+
+        void Connect(const std::string& ip, uint16_t port);
+        void Disconnect() const;
 
         Client(const Client&) = delete;
         Client(Client&&) = delete;
@@ -17,5 +22,6 @@ namespace licht::net
         void HandlePackets() const;
 
         ENetHost* m_client_ptr{ nullptr };
+        ENetPeer* m_peer_ptr{ nullptr };
     };
 }

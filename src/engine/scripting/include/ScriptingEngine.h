@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-namespace licht::system::scripting
+namespace licht::scripting
 {
     struct AsEngineReleaser
     {
@@ -25,6 +25,9 @@ namespace licht::system::scripting
 
         ScriptingEngine(const ScriptingEngine&) = delete;
         ScriptingEngine& operator=(const ScriptingEngine&) = delete;
+
+        ScriptingEngine(ScriptingEngine&&) = delete;
+        ScriptingEngine& operator=(ScriptingEngine&&) = delete;
 
         bool load_module_from_file(const std::string& moduleName, const std::string& filePath);
         bool load_module_from_string(const std::string& moduleName, const std::string& virtualName, const std::string& code);

@@ -115,17 +115,14 @@ function(AddLightLibraries)
         GIT_PROGRESS TRUE
     )
 
-    FetchContent_GetProperties(angelscript)
-    if(NOT angelscript_POPULATED)
-        FetchContent_MakeAvailable(angelscript)
+    FetchContent_MakeAvailable(angelscript)
     
-        set(AS_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
+    set(AS_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
     
-        add_subdirectory(
+    add_subdirectory(
             ${angelscript_SOURCE_DIR}/sdk/angelscript/projects/cmake
             ${angelscript_BINARY_DIR}/as_build
-        )
-    endif()
+    )
 
     # AngelScript add-ons 
     add_library(angelscript_addons STATIC
@@ -164,7 +161,7 @@ function(AddLightLibraries)
             glm::glm
             # imgui
             angelscript
-            angelscript_addons
+            angelscript_addons # to be able to use std::string and no manual conversion to cstyle string
             spdlog
             TracyClient
             sdl3webgpu

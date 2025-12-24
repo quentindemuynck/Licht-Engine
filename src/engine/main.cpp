@@ -19,17 +19,17 @@ namespace
 // angel script functions
 void as_log_info(const std::string& msg)
 {
-    spdlog::info("{}", msg);
+    spdlog::info(msg);
 }
 
 void as_log_warn(const std::string& msg)
 {
-    spdlog::warn("{}", msg);
+    spdlog::warn(msg);
 }
 
 void as_log_error(const std::string& msg)
 {
-    spdlog::error("{}", msg);
+    spdlog::error(msg);
 }
 
 
@@ -45,7 +45,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
     core.get_update().add_listener(o_yea_i_hear);
     core.get_update().notify_listeners();
 
-    licht::system::scripting::ScriptingEngine scriptingEngine;
+    licht::scripting::ScriptingEngine scriptingEngine;
 
     asIScriptEngine* engine = scriptingEngine.get_angel_script_engine();
 

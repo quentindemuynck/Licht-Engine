@@ -16,14 +16,14 @@
 
 #include <reflect>
 
-namespace licht::system::scripting
+namespace licht::scripting
 {
     ScriptingEngine::ScriptingEngine()
         : m_engine(asCreateScriptEngine())
     {
         if (!m_engine.get())
         {
-            spdlog::error("failed to create AngelScript engine!");
+            throw std::runtime_error("Failed to create AngelScript engine");
         }
 
         int r = m_engine->SetMessageCallback(asFUNCTION(ScriptingEngine::message_callback), nullptr, asCALL_CDECL);
@@ -35,7 +35,7 @@ namespace licht::system::scripting
     bool ScriptingEngine::load_module_from_file(const std::string& moduleName, const std::string& filePath)
     {
         CScriptBuilder builder;
-        int            r = builder.StartNewModule(m_engine.get(), moduleName.c_str());
+        int r = builder.StartNewModule(m_engine.get(), moduleName.c_str());
         if (r < 0)
             return false;
 
@@ -64,7 +64,7 @@ namespace licht::system::scripting
         if (!mod)
             return false;
 
-        int r = mod->AddScriptSection(virtualName.c_str(), code.c_str(), (unsigned)code.size());
+        int r = mod->AddScriptSection(virtualName.c_str(), code.c_str(), static_cast<unsigned>code.size());
         if (r < 0)
             return false;
 
@@ -165,9 +165,9 @@ namespace licht::system::scripting
 
   void ScriptingEngine::exception_callback(asIScriptContext* ctx, void*)
     {
-        int         col = 0;
+        int col = 0;
         const char* section = "<unknown>";
-        int         line = ctx->GetExceptionLineNumber(&col, &section);
+        int line = ctx->GetExceptionLineNumber(&col, &section);
 
         const asIScriptFunction* fn = ctx->GetExceptionFunction();
 

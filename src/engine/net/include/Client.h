@@ -13,8 +13,9 @@ namespace licht::net
         Client(Client&&) = delete;
         Client& operator=(const Client&) = delete;
         Client& operator=(Client&&) = delete;
-
     private:
+        void HandlePackets() const;
+
         ENetHost* m_client_ptr{ nullptr };
     };
 }

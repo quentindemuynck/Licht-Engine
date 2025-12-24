@@ -15,6 +15,8 @@ namespace licht::net
         Server& operator=(Server&&) = delete;
 
     private:
+        void HandlePackets() const;
+
         ENetAddress m_address{};
         ENetHost* m_host_ptr{ nullptr };
     };

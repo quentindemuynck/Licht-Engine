@@ -2,7 +2,9 @@ add_library(LichtEngine-net
         src/server.cpp
         include/server.h
         src/client.cpp
-        include/client.h)
+        include/client.h
+        src/Address.cpp
+        include/Address.h)
 
 file(GLOB src "src/*")
 target_sources(LichtEngine-net PRIVATE ${src})

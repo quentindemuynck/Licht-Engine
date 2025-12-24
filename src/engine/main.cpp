@@ -6,34 +6,28 @@
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
 
-#include <Events/EventListener.h>
 #include <Core.h>
+#include <Renderer.h>
 
 namespace
 {
-    SDL_Window* m_window;
     licht::Core core;
 } // namespace
 
-
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
-    m_window = SDL_CreateWindow("Editor", 1920, 1080, 0);
-    spdlog::info("Hello");
+    core.init();
+    core.add_module<licht::Renderer>();
 
-    EventListener<> o_yea_i_hear{[](){
-        spdlog::info("hello");
-    }};
+    core.start();
 
-    core.get_update().add_listener(o_yea_i_hear);
-    core.get_update().notify_listeners();
-
-    return SDL_AppResult::SDL_APP_CONTINUE;
+    return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    return SDL_AppResult::SDL_APP_CONTINUE;
+    core.update();
+    return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
@@ -42,7 +36,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     {
         return SDL_APP_SUCCESS;
     }
-    return SDL_AppResult::SDL_APP_CONTINUE;
+    return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void* appstate, SDL_AppResult result)

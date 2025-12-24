@@ -106,6 +106,40 @@ function(AddLightLibraries)
     add_library(reflect_cpp20 INTERFACE)
     target_include_directories(reflect_cpp20 INTERFACE ${reflect_SOURCE_DIR} )
 
+    # AngelScript
+    FetchContent_Declare(
+        angelscript
+        GIT_REPOSITORY https://github.com/anjo76/angelscript.git
+        GIT_TAG v2.38.0          
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+    )
+
+    FetchContent_MakeAvailable(angelscript)
+    
+    set(AS_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
+    
+    add_subdirectory(
+            ${angelscript_SOURCE_DIR}/sdk/angelscript/projects/cmake
+            ${angelscript_BINARY_DIR}/as_build
+    )
+
+    # AngelScript add-ons 
+    add_library(angelscript_addons STATIC
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptstdstring/scriptstdstring.cpp
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptarray/scriptarray.cpp
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptdictionary/scriptdictionary.cpp
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptbuilder/scriptbuilder.cpp
+    )
+
+    target_include_directories(angelscript_addons PUBLIC
+        ${angelscript_SOURCE_DIR}/sdk/angelscript/include 
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptstdstring
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptarray
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptdictionary
+        ${angelscript_SOURCE_DIR}/sdk/add_on/scriptbuilder
+    )
+
     # tracy
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(TRACY_ENABLE OFF CACHE BOOL "" FORCE)
@@ -126,6 +160,8 @@ function(AddLightLibraries)
     target_link_libraries(LichtEngine-Libraries INTERFACE
             glm::glm
             # imgui
+            angelscript
+            angelscript_addons # to be able to use std::string and no manual conversion to cstyle string
             spdlog
             TracyClient
             sdl3webgpu

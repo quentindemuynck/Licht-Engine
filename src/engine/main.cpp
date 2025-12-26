@@ -9,6 +9,9 @@
 #include <Events/EventListener.h>
 #include <Core.h>
 #include "ScriptingEngine.h"
+#include "AngelScriptRegister.h"
+#include "AngelScriptStubWriter.h"
+#include "RegisterAllAngelScript.h"
 
 namespace
 {
@@ -16,21 +19,6 @@ namespace
     licht::Core core;
 } // namespace
 
-// angel script functions
-void as_log_info(const std::string& msg)
-{
-    spdlog::info(msg);
-}
-
-void as_log_warn(const std::string& msg)
-{
-    spdlog::warn(msg);
-}
-
-void as_log_error(const std::string& msg)
-{
-    spdlog::error(msg);
-}
 
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
@@ -49,20 +37,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 
     asIScriptEngine* engine = scriptingEngine.get_angel_script_engine();
 
-    engine->RegisterGlobalFunction(
-        "void log_info(const string &in)",
-        asFUNCTION(as_log_info),
-        asCALL_CDECL);
-
-    engine->RegisterGlobalFunction(
-        "void log_warn(const string &in)",
-        asFUNCTION(as_log_warn),
-        asCALL_CDECL);
-
-    engine->RegisterGlobalFunction(
-        "void log_error(const string &in)",
-        asFUNCTION(as_log_error),
-        asCALL_CDECL);
+    licht::scripting::register_all(*engine);
 
 
     scriptingEngine.load_module_from_file("Game", "game/main.as");

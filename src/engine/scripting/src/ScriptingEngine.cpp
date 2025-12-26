@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstdio>
+#include "AngelScriptRegister.h"
 
 // Add-ons
 #include <scriptstdstring.h>
@@ -11,10 +12,6 @@
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-
-//reflection
-
-#include <reflect>
 
 namespace licht::scripting
 {
@@ -64,7 +61,7 @@ namespace licht::scripting
         if (!mod)
             return false;
 
-        int r = mod->AddScriptSection(virtualName.c_str(), code.c_str(), static_cast<unsigned>code.size());
+        int r = mod->AddScriptSection(virtualName.c_str(), code.c_str(), static_cast<unsigned>(code.size()));
         if (r < 0)
             return false;
 

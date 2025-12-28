@@ -6,27 +6,27 @@
 #define SDL_MAIN_HANDLED
 #include <SDL3/SDL.h>
 
-#include <Core.h>
+#include <Engine.h>
 #include <Renderer.h>
 
 namespace
 {
-    licht::Core core;
-} // namespace
+    licht::core::Engine<licht::Renderer> engine;
+}
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv)
 {
-    core.init();
-    core.add_module<licht::Renderer>();
+    // licht::core::init();
+    // core.add_module<licht::Renderer>();
 
-    core.start();
+    // core.start();
 
     return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    core.update();
+    engine.update_loop();
     return SDL_APP_CONTINUE;
 }
 

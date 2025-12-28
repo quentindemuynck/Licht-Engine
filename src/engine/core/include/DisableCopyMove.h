@@ -1,9 +1,0 @@
-#pragma once
-
-#define DISABLE_COPY(className)           \
-    className(const className&) = delete; \
-    className& operator=(const className&) = delete
-
-#define DISABLE_MOVE(className)      \
-    className(className&&) = delete; \
-    className& operator=(className&&) = delete

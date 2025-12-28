@@ -2,6 +2,8 @@
 
 #include <memory>
 #include "ModuleInterface.h"
+
+#include <Engine.h>
 #include <Events/EventListener.h>
 
 namespace licht
@@ -9,10 +11,10 @@ namespace licht
     class Renderer final : public licht::ModuleInterface
     {
     public:
-        virtual void load_module(licht::Core& core);
-        virtual void unload_module();
+        void load_module() override;
+        void unload_module() override;
 
-    private:
-        std::unique_ptr<EventListener<>> m_updater;
+        void update();
+        void fixed_update();
     };
 } // namespace licht
